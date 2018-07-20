@@ -38,6 +38,9 @@ NAN_METHOD(get)
       info.GetReturnValue().Set(locale);
     }
     CFRelease(string);
+#else
+    v8::Local<v8::String> locale = Nan::New<v8::String>("en-gb").ToLocalChecked();
+    info.GetReturnValue().Set(locale);
 #endif
 }
 
