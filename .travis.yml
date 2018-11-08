@@ -1,0 +1,25 @@
+language: node_js
+
+matrix:
+  include:
+  - node_js: '8'
+    os: linux
+  - node_js: '8'
+    os: osx
+
+
+install:
+  - yarn install --frozen-lockfile
+  - yarn build:source
+  - yarn test
+
+script:
+  - PUBLISH_BINARY=false
+  # if we are building a tag then publish
+  - if [[ $TRAVIS_BRANCH == `git describe --tags --always HEAD` ]]; then PUBLISH_BINARY=true; fi;
+  - >
+    if [ "$PUBLISH_BINARY" == true ]; then
+      yarn global add prebuild
+      prebuild -t 6.14.4 -t 8.12.0 -r node --upload $prebuild_upload
+      prebuild -t 2.0.0 -r electron --upload $prebuild_upload
+    fi
