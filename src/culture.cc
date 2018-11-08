@@ -6,7 +6,7 @@
   #include <CoreFoundation/CoreFoundation.h>
 #endif
 
-NAN_METHOD(get) 
+NAN_METHOD(get)
 {
 #ifdef _WIN32
     WCHAR buf[LOCALE_NAME_MAX_LENGTH];
@@ -21,7 +21,7 @@ NAN_METHOD(get)
     CFLocaleRef loc = CFLocaleCopyCurrent();
     CFStringRef string = (CFStringRef)CFLocaleGetValue(loc, kCFLocaleIdentifier);
     CFRelease(loc);
-  
+
     CFIndex length = CFStringGetLength(string);
     const char* buffer = CFStringGetCStringPtr(string, kCFStringEncodingUTF8);
     if (buffer == NULL)
@@ -44,7 +44,7 @@ NAN_METHOD(get)
 #endif
 }
 
-NAN_MODULE_INIT(Init) 
+NAN_MODULE_INIT(Init)
 {
   NAN_EXPORT(target, get);
 }
